@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{5D2E2CBC-09BD-4F31-9504-E64DD4AC45F4}|Default">
+  <MonoDevelop.Ide.ItemProperties.ESP32__MTA__Feed PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ESP32_MTA_Feed/ESP32_MTA_Feed.csproj">
+    <Files>
+      <File FileName="ESP32_MTA_Feed/ESP32_MTA_Feed.csproj" Line="17" Column="11" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ESP32" expanded="True">
+            <Node name="ESP32_MTA_Feed" expanded="True" selected="True">
+              <Node name="Dependencies" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
