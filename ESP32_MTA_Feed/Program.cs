@@ -25,3 +25,6 @@ app.UseForwardedHeaders();
 app.MapControllers();
 
 app.Run();
+
+//info
+//https://www.digitalocean.com/community/tutorials/how-to-deploy-an-asp-net-core-application-with-mysql-server-using-nginx-on-ubuntu-18-04
