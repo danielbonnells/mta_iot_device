@@ -29,7 +29,7 @@ public class StopService
 
     public List<string> GetStop(string id)
     {
-        var _client = new HttpClient();
+
         var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("JSON").GetSection("SubwayAlerts").Value;
         var response =
             _client.GetAsync(mtaEndpoint);
@@ -53,7 +53,7 @@ public class StopService
 
         try
         {
-            var _client = new HttpClient();
+
             var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
             var response = await _client.GetAsync(mtaEndpoint);
             response.EnsureSuccessStatusCode(); // Ensure success status code before processing
@@ -83,7 +83,8 @@ public class StopService
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-            return dates;
+            //return dates;
+            throw;
         }
     }
 
