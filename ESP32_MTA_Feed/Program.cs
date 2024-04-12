@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -11,12 +14,6 @@ builder.Services.AddSwaggerGen();
 //builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 var app = builder.Build();
-
-Console.WriteLine("here-------------------");
-foreach (var c in builder.Configuration.AsEnumerable())
-{
-    Console.WriteLine(c.Key + " = " + c.Value);
-}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
