@@ -66,7 +66,8 @@ public class StopController : Controller
     public JsonResult GetAppSettings(){
         try
             {
-               return new JsonResult(_configuration);
+                return new JsonResult(AppContext.BaseDirectory);
+               return new JsonResult(_configuration["MtaApiEndpoints"]);
                // string mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{route}"];
 
             }
