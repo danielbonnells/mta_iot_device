@@ -26,7 +26,7 @@ public class RouteService
     public List<string> GetRoute(string id)
     {
         var _client = new HttpClient();
-        var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("SubwayAlerts").Value;
+        var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("JSON").GetSection("SubwayAlerts").Value;
         var response =
             _client.GetAsync(mtaEndpoint);
         var content = response.Result.Content.ReadFromJsonAsync<Root>();
