@@ -4,6 +4,8 @@ namespace ESP32_MTA_Feed.Services;
 public class RouteService
 {
     public RouteService(){}
+    private static readonly HttpClient _client = new HttpClient();
+
     private readonly IConfiguration _configuration;
     public RouteService(IConfiguration configuration)
     {
@@ -23,10 +25,10 @@ public class RouteService
     
     public List<string> GetRoute(string id)
     {
-        var client = new HttpClient();
+        var _client = new HttpClient();
         var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("SubwayAlerts").Value;
         var response =
-            client.GetAsync(mtaEndpoint);
+            _client.GetAsync(mtaEndpoint);
         var content = response.Result.Content.ReadFromJsonAsync<Root>();
         var list = new List<string>();
     

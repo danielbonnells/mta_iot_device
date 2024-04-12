@@ -1,12 +1,16 @@
+using ESP32_MTA_Feed.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESP32_MTA_Feed.Controllers;
-
+[ApiController]
+[Route("/api/Proto")]
 public class ProtoController : Controller
 {
-    // GET
-    public IActionResult Index()
+    [HttpGet()]
+    public async void GetRoute()
     {
-        return View();
+        await ProtoService.GetFeedAsync();
+        //return new JsonResult("hi");
+        
     }
 }
