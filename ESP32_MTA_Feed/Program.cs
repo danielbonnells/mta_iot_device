@@ -10,6 +10,7 @@ builder.Services.AddSwaggerGen();
 
 // Load configuration from appsettings.json
 //builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 
