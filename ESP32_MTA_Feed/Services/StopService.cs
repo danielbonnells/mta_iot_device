@@ -1,6 +1,7 @@
 using System.Globalization;
 using ESP32_MTA_Feed.Models;
 using TransitRealtime;
+using Microsoft.Extensions.Configuration;
 
 namespace ESP32_MTA_Feed.Services;
 
@@ -53,8 +54,13 @@ public class StopService
 
         try
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json").Build();
 
-            var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
+            string mtaEndpoint = config[routeId];
+            // string endpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
+            // var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
             var response = await _client.GetAsync(mtaEndpoint);
             response.EnsureSuccessStatusCode(); // Ensure success status code before processing
             var content = await response.Content.ReadAsByteArrayAsync();

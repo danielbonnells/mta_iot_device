@@ -1,5 +1,7 @@
 using ESP32_MTA_Feed.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+
 
 namespace ESP32_MTA_Feed.Controllers;
 [ApiController]
@@ -16,6 +18,7 @@ public class StopController(IConfiguration iConfig) : Controller
     [HttpGet("/api/Stop/{id}")]
     public JsonResult GetStopRT(string route, string id)
     {
+
         try {
         var routeService = new StopService(iConfig);
         var stopTimes = routeService.GetStopRT(route, id).Result;
