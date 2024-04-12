@@ -26,8 +26,8 @@ public class StopController(IConfiguration iConfig) : Controller
         stopTimes.ForEach(time => stopTimesList.Add(time.Subtract(now).Minutes.ToString()));
 
         return new JsonResult(stopTimesList.Take(5));
-        } catch {
-            throw;
+        } catch (Exception e){
+            return new JsonResult(e.Message + e.Source + e.StackTrace);
         }
 
         
