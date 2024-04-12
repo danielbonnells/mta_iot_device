@@ -51,21 +51,12 @@ public class StopService
     public async Task<List<DateTime>> GetStopRT(string routeId, string stopId)
     {
         List<DateTime> dates = [];
-        // string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        // string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-            string mtaEndpoint = _configuration[$"MtaApiEndpoints:GTFS:{routeId}"];
 
         try
         {
             
-
-            // var config = new ConfigurationBuilder()
-            //     .SetBasePath(strWorkPath)
-            //     .AddJsonFile("appsettings.json").Build();
-           
-            //string mtaEndpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g";
-            // var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
-            var response = await _client.GetAsync(mtaEndpoint);
+           var mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{routeId}"];
+           var response = await _client.GetAsync(mtaEndpoint);
             response.EnsureSuccessStatusCode(); // Ensure success status code before processing
             var content = await response.Content.ReadAsByteArrayAsync();
             var result = ProtoService.ToObject<FeedMessage>(content);
@@ -93,8 +84,7 @@ public class StopService
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
-            //return dates;
-            throw new Exception($"Attempted uri: " + mtaEndpoint);
+            throw;
         }
     }
 
