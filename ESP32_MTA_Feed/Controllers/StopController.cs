@@ -61,4 +61,19 @@ public class StopController : Controller
 
         
     }
+
+    [HttpGet("/api/Stop/Settings")]
+    public JsonResult GetAppSettings(){
+        try
+            {
+               return new JsonResult(_configuration);
+               // string mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{route}"];
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving MTA endpoint.");
+                return new JsonResult(500, "An error occurred while processing the request.");
+            }
+    }
 }
