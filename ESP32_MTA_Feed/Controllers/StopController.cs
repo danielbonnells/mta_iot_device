@@ -35,7 +35,11 @@ public class StopController : Controller
 
             List<string> stopTimesList = new List<string>();
             DateTime now = DateTime.Now;
-            stopTimes.ForEach(time => stopTimesList.Add(time.Subtract(now).Minutes.ToString()));
+            stopTimes.ForEach(time => {
+                var each = time.Subtract(now).Minutes.ToString();
+                each = $"There is a {route} train in {each} minutes";
+                stopTimesList.Add(each);
+                });
 
             return new JsonResult(stopTimesList.Take(5));
         }
