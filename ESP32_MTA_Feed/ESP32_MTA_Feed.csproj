@@ -16,7 +16,7 @@
       <Folder Include="Files/" />
     </ItemGroup>
 <ItemGroup>
-   <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
+   <None Include="appsettings.json" CopyToPublishDirectory="Always" />
 </ItemGroup>
 <ItemGroup>
   <Content Update="appsettings.Production.json">
