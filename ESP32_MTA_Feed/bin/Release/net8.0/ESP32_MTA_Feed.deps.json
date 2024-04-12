@@ -8,12 +8,23 @@
     ".NETCoreApp,Version=v8.0": {
       "ESP32_MTA_Feed/1.0.0": {
         "dependencies": {
+          "Google.Protobuf": "3.26.1",
+          "Google.Protobuf.Tools": "3.26.1",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "runtime": {
           "ESP32_MTA_Feed.dll": {}
         }
       },
+      "Google.Protobuf/3.26.1": {
+        "runtime": {
+          "lib/net5.0/Google.Protobuf.dll": {
+            "assemblyVersion": "3.26.1.0",
+            "fileVersion": "3.26.1.0"
+          }
+        }
+      },
+      "Google.Protobuf.Tools/3.26.1": {},
       "Microsoft.Extensions.ApiDescription.Server/3.0.0": {},
       "Microsoft.OpenApi/1.2.3": {
         "runtime": {
@@ -68,6 +79,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Google.Protobuf/3.26.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-CHZX8zXqhF/fdUtd+AYzew8T2HFkAoe5c7lbGxZY/qryAlQXckDvM5BfOJjXlMS7kyICqQTMszj4w1bX5uBJ/w==",
+      "path": "google.protobuf/3.26.1",
+      "hashPath": "google.protobuf.3.26.1.nupkg.sha512"
+    },
+    "Google.Protobuf.Tools/3.26.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OwVxj33D/LeXx3upbqwVogsOQ4jHYrN8/qCf/BCcgkVsT57SmcHYRZySa039lyuYdp0sjyvRCWC2zFfJ8U+NeA==",
+      "path": "google.protobuf.tools/3.26.1",
+      "hashPath": "google.protobuf.tools.3.26.1.nupkg.sha512"
     },
     "Microsoft.Extensions.ApiDescription.Server/3.0.0": {
       "type": "package",
