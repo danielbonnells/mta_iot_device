@@ -12,6 +12,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+Console.WriteLine("here-------------------");
+foreach (var c in builder.Configuration.AsEnumerable())
+{
+    Console.WriteLine(c.Key + " = " + c.Value);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

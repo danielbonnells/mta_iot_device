@@ -51,18 +51,19 @@ public class StopService
     public async Task<List<DateTime>> GetStopRT(string routeId, string stopId)
     {
         List<DateTime> dates = [];
+        // string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        // string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
 
         try
         {
-            string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+            
 
-            var config = new ConfigurationBuilder()
-                .SetBasePath(strWorkPath)
-                .AddJsonFile("appsettings.json").Build();
-
-            string mtaEndpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g";
-            // string endpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
+            // var config = new ConfigurationBuilder()
+            //     .SetBasePath(strWorkPath)
+            //     .AddJsonFile("appsettings.json").Build();
+           
+            //string mtaEndpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g";
+            string mtaEndpoint = _configuration[$"MtaApiEndpoints:GTFS:{routeId}"];
             // var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
             var response = await _client.GetAsync(mtaEndpoint);
             response.EnsureSuccessStatusCode(); // Ensure success status code before processing
