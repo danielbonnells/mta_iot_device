@@ -61,7 +61,7 @@ public class StopService
                 .SetBasePath(strWorkPath)
                 .AddJsonFile("appsettings.json").Build();
 
-            string mtaEndpoint = config[routeId];
+            string mtaEndpoint = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g";
             // string endpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
             // var mtaEndpoint = _configuration.GetSection("MtaApiEndpoints").GetSection("GTFS").GetSection(routeId).Value;
             var response = await _client.GetAsync(mtaEndpoint);
