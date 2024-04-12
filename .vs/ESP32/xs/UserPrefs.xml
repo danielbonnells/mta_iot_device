@@ -1,15 +1,20 @@
 ﻿<Properties StartupConfiguration="{5D2E2CBC-09BD-4F31-9504-E64DD4AC45F4}|Default">
   <MonoDevelop.Ide.ItemProperties.ESP32__MTA__Feed PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ESP32_MTA_Feed/ESP32_MTA_Feed.csproj">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ESP32_MTA_Feed/Program.cs">
     <Files>
       <File FileName="ESP32_MTA_Feed/ESP32_MTA_Feed.csproj" Line="17" Column="11" />
+      <File FileName="ESP32_MTA_Feed/appsettings.json" Line="1" Column="1" />
+      <File FileName="ESP32_MTA_Feed/appsettings.Development.json" Line="1" Column="1" />
+      <File FileName="ESP32_MTA_Feed/Program.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ESP32" expanded="True">
-            <Node name="ESP32_MTA_Feed" expanded="True" selected="True">
+            <Node name="ESP32_MTA_Feed" expanded="True">
               <Node name="Dependencies" expanded="True" />
+              <Node name="appsettings.json" expanded="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -17,7 +22,7 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

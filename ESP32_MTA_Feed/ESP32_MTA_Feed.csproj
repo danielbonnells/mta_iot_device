@@ -15,5 +15,7 @@
     <ItemGroup>
       <Folder Include="Files/" />
     </ItemGroup>
-
+<ItemGroup>
+   <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
+</ItemGroup>
 </Project>
