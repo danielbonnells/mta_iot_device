@@ -16,7 +16,7 @@ public class StopController(IConfiguration iConfig) : Controller
     [HttpGet("/api/Stop/{id}")]
     public JsonResult GetStopRT(string route, string id)
     {
-        
+        try {
         var routeService = new StopService(iConfig);
         var stopTimes = routeService.GetStopRT(route, id).Result;
         stopTimes.Sort((a, b) => a.CompareTo(b));
@@ -26,6 +26,10 @@ public class StopController(IConfiguration iConfig) : Controller
         stopTimes.ForEach(time => stopTimesList.Add(time.Subtract(now).Minutes.ToString()));
 
         return new JsonResult(stopTimesList.Take(5));
+        } catch {
+            throw;
+        }
+
         
     }
 }
