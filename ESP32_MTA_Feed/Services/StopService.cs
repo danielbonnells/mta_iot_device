@@ -54,8 +54,11 @@ public class StopService
 
         try
         {
+            string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+
             var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(strWorkPath)
                 .AddJsonFile("appsettings.json").Build();
 
             string mtaEndpoint = config[routeId];
