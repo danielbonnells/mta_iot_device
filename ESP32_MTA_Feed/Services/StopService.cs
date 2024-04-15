@@ -51,15 +51,17 @@ public class StopService
     public async Task<List<DateTime>> GetStopRT(string routeId, string stopId)
     {
         List<DateTime> dates = [];
-
+        string[] routes1234567 = ["1","2","3","4","5","6","7"];
+        string routeEndpoint = routeId;
+        if(routes1234567.Contains(routeId)) routeEndpoint = "1234567";
         try
         {
             
-           var mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{routeId}"];
+           var mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{routeEndpoint}"];
            var response = await _client.GetAsync(mtaEndpoint);
             response.EnsureSuccessStatusCode(); // Ensure success status code before processing
             var content = await response.Content.ReadAsByteArrayAsync();
-            var result = ProtoService.ToObject<FeedMessage>(content);
+            var result = GeneralService.ToObject<FeedMessage>(content);
 
             foreach (var entity in result.Entity)
             {
@@ -69,7 +71,7 @@ public class StopService
                     foreach(var stop in entity?.TripUpdate?.StopTimeUpdate){
                         if (stop.StopId == stopId){
                              Console.WriteLine(entity.ToString());
-                            var date = UnixTimeStampToDateTime(stop.Arrival.Time);
+                            var date = GeneralService.UnixTimeStampToDateTime(stop.Arrival.Time);
                             dates.Add(date);
                             Console.WriteLine($"{date}");
 
@@ -88,11 +90,5 @@ public class StopService
         }
     }
 
-    public static DateTime UnixTimeStampToDateTime( double unixTimeStamp )
-    {
-        // Unix timestamp is seconds past epoch
-        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds( unixTimeStamp ).ToLocalTime();
-        return dateTime;
-    }
+
 }

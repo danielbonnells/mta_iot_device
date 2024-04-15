@@ -25,7 +25,7 @@ namespace ESP32_MTA_Feed.Services
                 response.EnsureSuccessStatusCode(); // Ensure success status code before processing
 
                 var content = await response.Content.ReadAsByteArrayAsync();
-                var result = ToObject<FeedMessage>(content);
+                var result = GeneralService.ToObject<FeedMessage>(content);
 
                 foreach (var entity in result.Entity)
                 {
@@ -60,16 +60,6 @@ namespace ESP32_MTA_Feed.Services
             }
         }
 
-        public static T ToObject<T>(byte[] buf) where T : IMessage<T>, new()
-        {
-            if (buf == null)
-                return default;
-
-            using (var ms = new MemoryStream(buf))
-            {
-                MessageParser<T> parser = new MessageParser<T>(() => new T());
-                return parser.ParseFrom(ms);
-            }
-        }
+        
     }
 }

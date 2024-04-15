@@ -29,15 +29,17 @@ public class StopController : Controller
     {
         try
         {
-            var routeService = new StopService(_configuration);
-            var stopTimes = routeService.GetStopRT(route, id).Result;
+            if (route == null) return new JsonResult("Missing route or stop id.");
+            string direction = id.EndsWith("S") ? "Southbound" : id.EndsWith("N") ? "Northbound" : "";
+            var stopService = new StopService(_configuration);
+            var stopTimes = stopService.GetStopRT(route, id).Result;
             stopTimes.Sort((a, b) => a.CompareTo(b));
 
             List<string> stopTimesList = new List<string>();
             DateTime now = DateTime.Now;
             stopTimes.ForEach(time => {
                 var each = time.Subtract(now).Minutes.ToString();
-                each = $"There is a {route} train in {each} minutes";
+                each = $"There is a {direction} {route} train arriving in {each} minutes";
                 stopTimesList.Add(each);
                 });
 
