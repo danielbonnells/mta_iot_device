@@ -91,4 +91,13 @@ public class StopService
     }
 
 
+    public List<SubwayStop> GetAllStops()
+    {
+
+        var db = new MtaFeedContext();
+        var list = db.SubwayStops.ToList();
+        
+
+        return list;
+    }
 }
