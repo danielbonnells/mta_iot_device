@@ -20,8 +20,15 @@ public class StopController : Controller
     [HttpPost]
     public JsonResult GetStops([FromBody] string[] ids)
     {
-        var routeService = new StopService(_configuration);
-        return new JsonResult(routeService.GetStops(ids));
+        var stopService = new StopService(_configuration);
+        return new JsonResult(stopService.GetStops(ids));
+    }
+
+    [HttpGet("/api/Stops")]
+    public JsonResult GetAllStops()
+    {
+        var stopService = new StopService(_configuration);
+        return new JsonResult(stopService.GetAllStops());
     }
 
     [HttpGet("/api/Stop/{id}")]
