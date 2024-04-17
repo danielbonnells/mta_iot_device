@@ -27,8 +27,13 @@ public class StopController : Controller
     [HttpGet("/api/Stops")]
     public JsonResult GetAllStops()
     {
+        try{
         var stopService = new StopService(_configuration);
-        return new JsonResult(stopService.GetAllStops());
+        var response = stopService.GetAllStops();
+        return new JsonResult(response);
+        } catch {
+            throw;
+        }
     }
 
     [HttpGet("/api/Stop/{id}")]
