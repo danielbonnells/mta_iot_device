@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using MySqlConnector;
+using Pomelo.EntityFrameworkCore.MySql;
 
 namespace ESP32_MTA_Feed.Models;
 
 public partial class MtaFeedContext : DbContext
 {
-    public MtaFeedContext()
-    {
-    }
+    private readonly IConfiguration _configuration;
 
-    public MtaFeedContext(DbContextOptions<MtaFeedContext> options)
-        : base(options)
+    public MtaFeedContext(IConfiguration configuration)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<SubwayStop> SubwayStops { get; set; }
 
           protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var conStrBuilder = new MySqlConnectionStringBuilder(_configuration.GetConnectionString("MtaFeed"))
+            var conStrBuilder = new MySqlConnector.MySqlConnectionStringBuilder(_configuration.GetConnectionString("MtaFeed"))
             {
                 Password = _configuration["Database:Pass"],
                 UserID = _configuration["Database:User"]
