@@ -93,11 +93,14 @@ public class StopService
 
     public List<SubwayStop> GetAllStops()
     {
-
+        try{
         var db = new MtaFeedContext(_configuration);
         var list = db.SubwayStops.ToList();
         
 
         return list;
+        } catch {
+            throw;
+        }
     }
 }
