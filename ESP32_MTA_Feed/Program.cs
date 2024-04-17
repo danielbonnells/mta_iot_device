@@ -1,8 +1,10 @@
-
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+// builder.Configuration.AddEnvironmentVariables();
 
 
 builder.Services.AddControllers();
@@ -23,9 +25,13 @@ if (app.Environment.IsDevelopment())
 
 //app.UseAuthorization();
 
+
+
 app.UseForwardedHeaders();
 
 app.MapControllers();
+
+
 
 app.Run();
 
