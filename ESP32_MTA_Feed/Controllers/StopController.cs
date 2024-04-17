@@ -33,6 +33,13 @@ public class ErrorResponse
 public JsonResult GetAllStops()
 {
     try{
+
+        return new JsonResult($@"
+        {_configuration.GetConnectionString("MtaFeed")}
+        {_configuration["Database:Pass"]}
+        {_configuration["Database:User"]}
+        ");
+
         var stopService = new StopService(_configuration);
         var response = stopService.GetAllStops();
         return new JsonResult(response);
