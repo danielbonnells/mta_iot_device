@@ -34,6 +34,11 @@ public JsonResult GetAllStops()
 {
     try{
 
+
+      return new JsonResult($@"
+        {_configuration}
+        ");
+
         return new JsonResult($@"
         {_configuration.GetConnectionString("MtaFeed")}
         {_configuration["Database:Pass"]}
