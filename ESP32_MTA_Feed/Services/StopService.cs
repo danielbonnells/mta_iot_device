@@ -99,8 +99,8 @@ public class StopService
         
 
         return list;
-        } catch {
-            throw;
+        } catch (Exception e){
+            throw e;
         }
     }
 }
