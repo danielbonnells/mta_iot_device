@@ -24,18 +24,22 @@ public class StopController : Controller
         return new JsonResult(stopService.GetStops(ids));
     }
 
-    [HttpGet("/api/Stop/All")]
-    public JsonResult GetAllStops()
-    {
-        try{
+public class ErrorResponse
+{
+    public string Message { get; set; }
+}
+
+[HttpGet("/api/Stop/All")]
+public JsonResult GetAllStops()
+{
+    try{
         var stopService = new StopService(_configuration);
         var response = stopService.GetAllStops();
         return new JsonResult(response);
-        } catch (Exception e) {
-            return new JsonResult(e);
-        }
+    } catch (Exception e) {
+        return new JsonResult(new ErrorResponse { Message = e.Message });
     }
-
+}
     [HttpGet("/api/Stop/{id}")]
     public JsonResult GetStopRT(string route, string id)
     {
