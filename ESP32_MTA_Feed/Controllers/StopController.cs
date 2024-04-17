@@ -31,8 +31,8 @@ public class StopController : Controller
         var stopService = new StopService(_configuration);
         var response = stopService.GetAllStops();
         return new JsonResult(response);
-        } catch {
-            throw;
+        } catch (Exception e) {
+            return new JsonResult(e);
         }
     }
 
