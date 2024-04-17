@@ -24,7 +24,7 @@ public class StopController : Controller
         return new JsonResult(stopService.GetStops(ids));
     }
 
-    [HttpGet("/api/Stops")]
+    [HttpGet("/api/Stop/All")]
     public JsonResult GetAllStops()
     {
         try{
