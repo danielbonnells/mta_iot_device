@@ -36,11 +36,11 @@ public JsonResult GetAllStops()
 
 
   
-        return new JsonResult($@"
-        {_configuration.GetConnectionString("MtaFeed")}
-        {_configuration["DATABASE_PASS"]}
-        {_configuration["DATABASE_USER"]}
-        ");
+        // return new JsonResult($@"
+        // {_configuration.GetConnectionString("MtaFeed")}
+        // {_configuration["DATABASE_PASS"]}
+        // {_configuration["DATABASE_USER"]}
+        // ");
 
         var stopService = new StopService(_configuration);
         var response = stopService.GetAllStops();
