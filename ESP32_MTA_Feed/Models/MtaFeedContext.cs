@@ -23,8 +23,8 @@ public partial class MtaFeedContext : DbContext
         {
             var conStrBuilder = new MySqlConnector.MySqlConnectionStringBuilder(_configuration.GetConnectionString("MtaFeed"))
             {
-                Password = _configuration["Database:Pass"],
-                UserID = _configuration["Database:User"]
+                Password = _configuration["DATABASE_PASS"],
+                UserID = _configuration["DATABASE_USER"]
             };
 
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 36)); // Change the version as per your MySQL server version

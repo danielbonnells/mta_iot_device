@@ -38,8 +38,8 @@ public JsonResult GetAllStops()
   
         return new JsonResult($@"
         {_configuration.GetConnectionString("MtaFeed")}
-        {_configuration["Database:Pass"]}
-        {_configuration["Database:User"]}
+        {_configuration["DATABASE_PASS"]}
+        {_configuration["DATABASE_USER"]}
         ");
 
         var stopService = new StopService(_configuration);
