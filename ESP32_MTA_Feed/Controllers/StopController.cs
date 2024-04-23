@@ -1,3 +1,4 @@
+using ESP32_MTA_Feed.Models;
 using ESP32_MTA_Feed.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,58 +25,77 @@ public class StopController : Controller
         return new JsonResult(stopService.GetStops(ids));
     }
 
-public class ErrorResponse
-{
-    public string Message { get; set; }
-}
-
-[HttpGet("/api/Stop/All")]
-public JsonResult GetAllStops()
-{
-    try{
-
-
-  
-        // return new JsonResult($@"
-        // {_configuration.GetConnectionString("MtaFeed")}
-        // {_configuration["DATABASE_PASS"]}
-        // {_configuration["DATABASE_USER"]}
-        // ");
-
-        var stopService = new StopService(_configuration);
-        var response = stopService.GetAllStops();
-        return new JsonResult(response);
-    } catch (Exception e) {
-        return new JsonResult(new ErrorResponse { Message = e.Message });
+    public class ErrorResponse
+    {
+        public string Message { get; set; }
     }
-}
-    [HttpGet("/api/Stop/{id}")]
-    public JsonResult GetStopRT(string route, string id)
+
+    [HttpGet("/api/Stop/All")]
+    public JsonResult GetAllStops()
     {
         try
         {
-            if (route == null) return new JsonResult("Missing route or stop id.");
-            string direction = id.EndsWith("S") ? "Southbound" : id.EndsWith("N") ? "Northbound" : "";
             var stopService = new StopService(_configuration);
-            var stopTimes = stopService.GetStopRT(route, id).Result;
-            stopTimes.Sort((a, b) => a.CompareTo(b));
+            var response = stopService.GetAllStops();
+            return new JsonResult(response);
+        }
+        catch (Exception e)
+        {
+            return new JsonResult(new ErrorResponse { Message = e.Message });
+        }
+    }
 
-            List<string> stopTimesList = new List<string>();
-            DateTime now = DateTime.Now;
-            stopTimes.ForEach(time => {
-                var each = time.Subtract(now).Minutes.ToString();
-                each = $"There is a {direction} {route} train arriving in {each} minutes";
-                stopTimesList.Add(each);
-                });
+    // [HttpGet("/api/Stop/{id}")]
+    // public JsonResult GetStopRT(string route, string id, string direction)
+    // {
+    //     try
+    //     {
+    //         if (route == null) return new JsonResult("Missing route or stop id.");
+    //         //string direction = id.EndsWith("S") ? "Southbound" : id.EndsWith("N") ? "Northbound" : "";
+    //         var stopService = new StopService(_configuration);
+    //         var stopTimes = stopService.GetStopByStopId(route, id, direction).Result;
+    //         stopTimes.Sort((a, b) => a.CompareTo(b));
 
-            return new JsonResult(stopTimesList.Take(5));
+    //         List<string> stopTimesList = new List<string>();
+    //         DateTime now = DateTime.Now;
+    //         stopTimes.ForEach(time =>
+    //         {
+    //             var each = time.Subtract(now).Minutes.ToString();
+    //             each = $"There is a {direction} {route} train arriving in {each} minutes";
+    //             stopTimesList.Add(each);
+    //         });
+
+    //         return new JsonResult(stopTimesList.Take(5));
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         return new JsonResult(e.Message + e.Source + e.StackTrace);
+    //     }
+    // }
+
+    [HttpGet("/api/Stop/ByName/{name}")]
+    public JsonResult GetStopRTByName(string name, string direction)
+    {
+        try
+        {
+            var options = new ConfigOptions();
+            var route = new Models.Route(name)
+            {
+                Direction = direction
+            };
+            options.Add(route);
+
+            var stopService = new StopService(_configuration);
+            var stopTimes = stopService.GetStopByName(options);
+
+        
+
+            return new JsonResult(stopTimes);
         }
         catch (Exception e)
         {
             return new JsonResult(e.Message + e.Source + e.StackTrace);
         }
-
-
     }
 
     [HttpGet("/api/Stop/Settings")]
