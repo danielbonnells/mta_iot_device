@@ -41,4 +41,22 @@ public class ESP32Controller : Controller
         }
     }
 
+        [HttpGet]
+    public async Task<IActionResult> PostConfigOptionsParams (string stopName, string direction)
+    {
+        try
+        {
+            var configOptions = new ConfigOptions();
+            configOptions.Routes.Add(new Models.Route(stopName){
+                Direction = direction
+            });
+            var esp32Service = new ESP32Service(_configuration);
+            return new JsonResult(esp32Service.GetAllData(configOptions));
+        }
+        catch (JsonException)
+        {
+            return BadRequest("Invalid parameters.");
+        }
+    }
+
 }
