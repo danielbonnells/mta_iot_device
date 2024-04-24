@@ -74,7 +74,7 @@ public class StopController : Controller
     // }
 
     [HttpGet("/api/Stop/ByName/{name}")]
-    public JsonResult GetStopRTByName(string name, string direction)
+    public JsonResult GetStopRTByName(string name, string direction = "BOTH")
     {
         try
         {

@@ -38,7 +38,7 @@ public static T ToObject<T>(byte[] buf) where T : IMessage<T>, new()
             "1" or "2" or "3" => "Red",
             "4" or "5" or "6" => "Green",
             "7" => "Purple",
-            _ => "",
+            _ => routeId,
         };
 
         return routeEndpoint;
@@ -57,7 +57,7 @@ public static T ToObject<T>(byte[] buf) where T : IMessage<T>, new()
             "1" or "2" or "3" => ["1", "2", "3"],
             "4" or "5" or "6" => ["4", "5", "6"],
             "7" => ["7"],
-            _ => [""],
+            _ => [routeId],
         };
 
         return routeEndpoint.ToList();

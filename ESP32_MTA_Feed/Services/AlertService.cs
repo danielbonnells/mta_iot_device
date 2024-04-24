@@ -16,9 +16,6 @@ public class AlertService
     public async Task<List<string>> GetAlerts(string routeId, string stopId)
     {
 
-
-        stopId = stopId.Trim().Substring(0,3);
-
         try
         {
 

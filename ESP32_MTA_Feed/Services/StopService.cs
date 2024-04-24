@@ -94,10 +94,14 @@ public class StopService
                 {
                     foreach (var stop in entity?.TripUpdate?.StopTimeUpdate)
                     {
+                     Console.WriteLine(stop);
                         if (stop.StopId == route.StopId + direction)
                         {
+                            if(stop.Arrival != null){
                             var date = GeneralService.UnixTimeStampToDateTime(stop.Arrival.Time);
                             newRoute.ArrivalTimes.Add(date);
+                            }
+                            
                         }
                     }
                 }
