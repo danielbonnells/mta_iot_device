@@ -62,44 +62,34 @@ public class StopService
     {
 
         string routeEndpoint = GeneralService.MtaUri(routeId);
+
+        var feed = await GetFeedMessageAsync(routeEndpoint);
+
         var routes = new List<Models.Route>();
         //If both directions are requested, start with North
         string? direction = route.Direction == "BOTH" ? "N" : route.Direction;
+
         int count = 0;
+
         try
         {
-            string? mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{routeEndpoint}"];
-
-            if (string.IsNullOrEmpty(mtaEndpoint)) return null;
-
-            var response = await _client.GetAsync(mtaEndpoint);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsByteArrayAsync();
-            var result = GeneralService.ToObject<FeedMessage>(content);
 
         secondDirection:
-            var newRoute = new Models.Route(route.StopName)
-            {
-                RouteId = route.RouteId,
-                StopId = route.StopId,
-                Direction = route.Direction,
-                ArrivalTimes = route.ArrivalTimes != null ? new List<DateTime>(route.ArrivalTimes) : null
-            };
+            var newRoute = new Models.Route(route);
             newRoute.Direction = direction;
             newRoute.ArrivalTimes = [];
 
-            foreach (var entity in result.Entity)
+            foreach (var entity in feed.Entity)
             {
                 if (routeId == entity?.TripUpdate?.Trip?.RouteId)
                 {
                     foreach (var stop in entity?.TripUpdate?.StopTimeUpdate)
                     {
-                     Console.WriteLine(stop);
                         if (stop.StopId == route.StopId + direction)
                         {
                             if(stop.Arrival != null){
-                            var date = GeneralService.UnixTimeStampToDateTime(stop.Arrival.Time);
-                            newRoute.ArrivalTimes.Add(date);
+                                var date = GeneralService.UnixTimeStampToDateTime(stop.Arrival.Time);
+                                newRoute.ArrivalTimes.Add(date);
                             }
                             
                         }
@@ -173,6 +163,20 @@ public class StopService
         {
             throw e;
         }
+    }
+
+    public async Task<FeedMessage> GetFeedMessageAsync(string routeEndpoint){
+
+        string? mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{routeEndpoint}"];
+
+        if (string.IsNullOrEmpty(mtaEndpoint)) return null;
+
+        var response = await _client.GetAsync(mtaEndpoint);
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsByteArrayAsync();
+        var result = GeneralService.ToObject<FeedMessage>(content);
+
+        return result;
     }
 
     public List<SubwayStop> GetAllStops()
