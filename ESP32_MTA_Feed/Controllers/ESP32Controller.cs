@@ -41,7 +41,7 @@ public class ESP32Controller : Controller
         }
     }
 
-        [HttpGet]
+   [HttpGet]
     public async Task<IActionResult> PostConfigOptionsParams (string stopName, string direction)
     {
         try

@@ -28,18 +28,18 @@ public class ESP32Service
             List<List<string>> alertsList = new ();
             
             foreach (var route in routes){
-    
+                stopTimesList.Add(route.StopName + " >>> ");
                 route.ArrivalTimes.Sort((a, b) => a.CompareTo(b));
 
                 DateTime now = DateTime.Now;
-                var mostRecentTimes = route.ArrivalTimes.Take(3);
+                var mostRecentTimes = route.ArrivalTimes.Where(date => date > DateTime.Now).Take(3);
                 string direction = route.Direction == "N" ? "UP" : "DOWN";
                 var minutes = string.Empty;
                 foreach (var time in mostRecentTimes){
                      var each = time.Subtract(now).Minutes.ToString();
                      minutes += each + ", ";
                 }
-                string textLine = $"{route.StopName}: {direction} {route.RouteId} in " + minutes.Substring(0, minutes.Length - 2) + " minutes.";
+                string textLine = $"{direction} {route.RouteId} in " + minutes.Substring(0, minutes.Length - 2) + " mins.";
                 stopTimesList.Add(textLine);
 
                 var alertService = new AlertService(_configuration);

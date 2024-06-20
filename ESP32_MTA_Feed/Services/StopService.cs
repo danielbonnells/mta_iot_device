@@ -2,6 +2,7 @@ using System.Globalization;
 using ESP32_MTA_Feed.Models;
 using TransitRealtime;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ESP32_MTA_Feed.Services;
 
@@ -77,33 +78,18 @@ public class StopService
         secondDirection:
             var newRoute = new Models.Route(route);
             newRoute.Direction = direction;
-            newRoute.ArrivalTimes = [];
 
-            foreach (var entity in feed.Entity)
+            newRoute = GetArrivalTimes(newRoute, feed);
+
+            if (route.Direction == "BOTH" && count < 1)
             {
-                if (routeId == entity?.TripUpdate?.Trip?.RouteId)
-                {
-                    foreach (var stop in entity?.TripUpdate?.StopTimeUpdate)
-                    {
-                        if (stop.StopId == route.StopId + direction)
-                        {
-                            if(stop.Arrival != null){
-                                var date = GeneralService.UnixTimeStampToDateTime(stop.Arrival.Time);
-                                newRoute.ArrivalTimes.Add(date);
-                            }
-                            
-                        }
-                    }
-                }
-
-            }
-
-            if(route.Direction == "BOTH" && count < 1) {
                 routes.Add(newRoute);
                 direction = "S";
                 count++;
                 goto secondDirection;
-            } else {
+            }
+            else
+            {
                 routes.Add(newRoute);
             }
 
@@ -134,7 +120,7 @@ public class StopService
             {
                 var stops = db.SubwayStops.Where(stop => stop.StopName == route.StopName.Trim() && stop.ParentStation == "NULL").ToList();
 
-                if(stops == null || stops.Count == 0) throw new Exception("No stops found by that name.");
+                if (stops == null || stops.Count == 0) throw new Exception("No stops found by that name.");
 
                 foreach (var stop in stops)
                 {
@@ -142,15 +128,17 @@ public class StopService
 
                     foreach (var line in relatedLines)
                     {
-                           var r = new Models.Route(route.StopName){
+                        var r = new Models.Route(route.StopName)
+                        {
                             StopId = stop.StopId,
                             Direction = route.Direction,
                             RouteId = line
                         };
 
                         var newRoutes = GetStopByStopId(line, r).Result;
-                        if(newRoutes != null){
-                           list.AddRange(newRoutes);
+                        if (newRoutes != null)
+                        {
+                            list.AddRange(newRoutes);
                         }
                     }
                 }
@@ -165,7 +153,8 @@ public class StopService
         }
     }
 
-    public async Task<FeedMessage> GetFeedMessageAsync(string routeEndpoint){
+    public async Task<FeedMessage> GetFeedMessageAsync(string routeEndpoint)
+    {
 
         string? mtaEndpoint = _configuration?[$"MtaApiEndpoints:GTFS:{routeEndpoint}"];
 
@@ -177,6 +166,39 @@ public class StopService
         var result = GeneralService.ToObject<FeedMessage>(content);
 
         return result;
+    }
+
+    public Models.Route GetArrivalTimes(Models.Route route, FeedMessage feed)
+    {
+
+        route.ArrivalTimes = [];
+
+        foreach (var entity in feed.Entity)
+        {
+            if (route.RouteId == entity?.TripUpdate?.Trip?.RouteId)
+            {
+                var stops = entity?.TripUpdate?.StopTimeUpdate;
+                if (stops != null && stops.Count > 0)
+                {
+                    foreach (var stop in stops)
+                    {
+                        if (stop.StopId == route.StopId + route.Direction)
+                        {
+                            if (stop.Arrival != null)
+                            {
+                                var date = GeneralService.UnixTimeStampToDateTime(stop.Arrival.Time);
+                                route.ArrivalTimes.Add(date);
+                            }
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        return route;
     }
 
     public List<SubwayStop> GetAllStops()

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
-using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql;
 
 namespace ESP32_MTA_Feed.Models;
