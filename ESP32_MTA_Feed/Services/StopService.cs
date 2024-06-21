@@ -65,7 +65,7 @@ public class StopService
         string routeEndpoint = GeneralService.MtaUri(routeId);
 
         var feed = await GetFeedMessageAsync(routeEndpoint);
-
+        if(feed == null) return null;
         var routes = new List<Models.Route>();
         //If both directions are requested, start with North
         string? direction = route.Direction == "BOTH" ? "N" : route.Direction;

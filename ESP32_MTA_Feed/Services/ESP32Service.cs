@@ -26,9 +26,13 @@ public class ESP32Service
             var routes = stopService.GetStopByName(configOptions);
             List<string> stopTimesList = new List<string>();
             List<List<string>> alertsList = new ();
+            string latestStopName = "";
             
             foreach (var route in routes){
-                stopTimesList.Add(route.StopName + " >>> ");
+                if(latestStopName != route.StopName) {
+                    stopTimesList.Add(route.StopName + " >>> ");
+                    latestStopName = route.StopName;
+                }
                 route.ArrivalTimes.Sort((a, b) => a.CompareTo(b));
 
                 DateTime now = DateTime.Now;
