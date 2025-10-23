@@ -35,7 +35,7 @@ public class AlertService
                         if (alert.StopId == stopId)
                         {
                             
-                            Console.WriteLine(entity.ToString());
+                            //Console.WriteLine(entity.ToString());
                             list.Add("Stop Alert: " + entity.Alert.HeaderText?.Translation?.First()?.Text);
                         }
                     

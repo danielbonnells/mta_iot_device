@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "StartSSH",
+            "type": "shell",
+            "command": "ssh -N -L 3306:localhost:3306 root@165.227.85.79",
+            //   "isBackground": true,
+            "problemMatcher": [],
+        },
+        {
+            "label": "StopSSH",
+            "type": "shell",
+            "command": "pkill -f 'ssh -N -L 3306:localhost:3306'"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run .NET App (with DB Tunnel)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "StartSSH",
+      "postDebugTask": "StopSSH",
+      "program": "${workspaceFolder}/ESP32_MTA_Feed/bin/Debug/net8.0/ESP32_MTA_Feed.dll",
+      "cwd": "${workspaceFolder}/ESP32_MTA_Feed",
+      "stopAtEntry": false
+    }
+  ]
+}
