@@ -59,4 +59,20 @@ public class ESP32Controller : Controller
         }
     }
 
+    [HttpGet("publish-message")]
+    public async Task<IActionResult> PublishMessage ()
+    {
+        try
+        {
+            // Call the static method directly on the type; no instance required
+            var mqttService = new MqttService(_configuration);
+            await mqttService.Publish_Application_Message();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Invalid parameters.");
+        }
+    }
+
 }
