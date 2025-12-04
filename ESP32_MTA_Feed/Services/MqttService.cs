@@ -39,9 +39,12 @@ public class MqttService : IDisposable
         
     }    
     
-    public async Task InitializeAsync()
+public async Task InitializeAsync()
+{
+    try
     {
-        
+        // ⭐️ ADD THIS LOG LINE ⭐️
+        Console.WriteLine("MqttService Initialization started.");
             
         await _mqttClient.ConnectAsync(_mqttClientOptions, CancellationToken.None);
 
@@ -49,7 +52,16 @@ public class MqttService : IDisposable
         {
             throw new Exception("Failed to connect MQTT client during initialization.");
         }
+        
+        // ⭐️ ADD THIS SUCCESS LOG LINE ⭐️
+        Console.WriteLine("MqttService Initialization successful. Client connected.");
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"FATAL: MQTT INITIALIZATION FAILED: {ex.Message}");
+        throw; // Force the app to crash if the connection fails
+    }
+}
 
     public void Dispose()
     {
