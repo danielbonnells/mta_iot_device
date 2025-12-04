@@ -75,4 +75,20 @@ public class ESP32Controller : Controller
         }
     }
 
+    [HttpGet("publish-mta")]
+    public async Task<IActionResult> PublishMta ()
+    {
+        try
+        {
+            // Call the static method directly on the type; no instance required
+            var mqttService = new MqttService(_configuration);
+            await mqttService.PublishMta();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Invalid parameters.");
+        }
+    }
+
 }

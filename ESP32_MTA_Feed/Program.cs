@@ -1,3 +1,4 @@
+using ESP32_MTA_Feed;
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql;
 
@@ -6,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 
-
+builder.Services.AddSingleton<MqttService>();
+builder.Services.AddHostedService<MqttPublishScheduler>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

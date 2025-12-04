@@ -51,7 +51,7 @@ public static T ToObject<T>(byte[] buf) where T : IMessage<T>, new()
         string[] routeEndpoint = routeId switch
         {
             "A" or "C" or "E" => ["A", "C", "E"],
-            "B" or "D" or "F" or "M" => ["B", "D", "F"],
+            "B" or "D" or "F" or "M" => ["B", "D", "F", "M"],
             "N" or "Q" or "R" or "W" => ["N", "Q", "R", "W"],
             "J" or "Z" => ["J", "Z"],
             "1" or "2" or "3" => ["1", "2", "3"],
