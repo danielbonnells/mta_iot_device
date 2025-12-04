@@ -10,24 +10,12 @@ public class StopService
 {
     //public StopService() { }
     // private static readonly HttpClient _client = new HttpClient();
-    private static StopService _instance;
     private readonly HttpClient _client;
-
     private readonly IConfiguration _configuration;
-
-    public static StopService Instance(IConfiguration config)
-    {
-        if(_instance == null)
-        {
-            _instance = new StopService(config);
-        }
-        
-        return _instance;
-    } 
-    private StopService(IConfiguration configuration)
+    public StopService(IConfiguration configuration, IHttpClientFactory clientFactory)
     {
         _configuration = configuration;
-        _client = new HttpClient();
+        _client = clientFactory.CreateClient("MtaClient");
     }
     public List<string> GetStops(IEnumerable<string> ids)
     {

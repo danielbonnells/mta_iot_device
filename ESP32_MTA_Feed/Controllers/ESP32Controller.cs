@@ -12,11 +12,17 @@ public class ESP32Controller : Controller
 
     private readonly ILogger<ESP32Controller> _logger;
 
+    private readonly MqttService _mqttService;
+        private readonly StopService _stopService;
+
+
     private readonly IConfiguration _configuration;
-    public ESP32Controller(IConfiguration configuration, ILogger<ESP32Controller> logger)
+    public ESP32Controller(IConfiguration configuration, ILogger<ESP32Controller> logger, MqttService mqttService, StopService stopService)
     {
         _configuration = configuration;
         _logger = logger;
+        _mqttService = mqttService;
+        _stopService = stopService;
     }
 
 
@@ -31,7 +37,7 @@ public class ESP32Controller : Controller
     {
         try
         {
-            var esp32Service = new ESP32Service(_configuration);
+            var esp32Service = new ESP32Service(_configuration, _stopService);
             return new JsonResult(esp32Service.GetAllData(configOptions));
         }
         catch (JsonException)
@@ -50,7 +56,7 @@ public class ESP32Controller : Controller
             configOptions.Routes.Add(new Models.Route(stopName){
                 Direction = direction
             });
-            var esp32Service = new ESP32Service(_configuration);
+            var esp32Service = new ESP32Service(_configuration, _stopService);
             return new JsonResult(esp32Service.GetAllData(configOptions));
         }
         catch (JsonException)
@@ -65,8 +71,7 @@ public class ESP32Controller : Controller
         try
         {
             // Call the static method directly on the type; no instance required
-            var mqttService = MqttService.Instance(_configuration);
-            await mqttService.Publish_Application_Message();
+            await _mqttService.Publish_Application_Message();
             return Ok();
         }
         catch (Exception e)
@@ -81,8 +86,7 @@ public class ESP32Controller : Controller
         try
         {
             // Call the static method directly on the type; no instance required
-            var mqttService =  MqttService.Instance(_configuration);
-            await mqttService.PublishMta();
+            await _mqttService.PublishMta();
             return Ok();
         }
         catch (Exception e)

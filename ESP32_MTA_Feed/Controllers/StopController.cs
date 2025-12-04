@@ -9,20 +9,20 @@ public class StopController : Controller
 {
 
     private readonly ILogger<StopController> _logger;
-
+    private readonly StopService _stopService;
     private readonly IConfiguration _configuration;
-    public StopController(IConfiguration configuration, ILogger<StopController> logger)
+    public StopController(IConfiguration configuration, ILogger<StopController> logger, StopService stopService)
     {
         _configuration = configuration;
         _logger = logger;
+        _stopService = stopService;
     }
 
 
     [HttpPost]
     public JsonResult GetStops([FromBody] string[] ids)
     {
-        var stopService = StopService.Instance(_configuration);
-        return new JsonResult(stopService.GetStops(ids));
+        return new JsonResult(_stopService.GetStops(ids));
     }
 
     public class ErrorResponse
@@ -35,8 +35,7 @@ public class StopController : Controller
     {
         try
         {
-            var stopService = StopService.Instance(_configuration);
-            var response = stopService.GetAllStops();
+            var response = _stopService.GetAllStops();
             return new JsonResult(response);
         }
         catch (Exception e)
@@ -85,8 +84,7 @@ public class StopController : Controller
             };
             options.Add(route);
 
-            var stopService = StopService.Instance(_configuration);
-            var stopTimes = stopService.GetStopByName(options);
+            var stopTimes = _stopService.GetStopByName(options);
 
         
 

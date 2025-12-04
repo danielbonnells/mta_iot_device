@@ -5,21 +5,14 @@ using Pomelo.EntityFrameworkCore.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Services.AddSingleton<MqttService>(provider =>
-    {
-        var configuration = provider.GetRequiredService<IConfiguration>();
-        return  MqttService.Instance(configuration);
-    });
-builder.Services.AddSingleton<StopService>(provider =>
-    {
-        var configuration = provider.GetRequiredService<IConfiguration>();
-        return  StopService.Instance(configuration);
-    });
+builder.Services.AddHttpClient("MtaClient", client => {});
+builder.Services.AddSingleton<MqttService>();
+builder.Services.AddSingleton<StopService>();
 builder.Services.AddHostedService<MqttPublishScheduler>();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -33,17 +26,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 //app.UseAuthorization();
-
-
 
 app.UseForwardedHeaders();
 
 app.MapControllers();
-
-
 
 app.Run();
 

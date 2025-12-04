@@ -11,23 +11,15 @@ namespace ESP32_MTA_Feed;
 
 public class MqttService : IDisposable
 {
-    private static MqttService _instance;
+
     private readonly IConfiguration _configuration;
     private readonly IMqttClient _mqttClient;
+    private readonly MqttClientOptions _mqttClientOptions;
+    private readonly StopService _stopService;
 
-     private readonly MqttClientOptions _mqttClientOptions;
-
-    public static MqttService Instance(IConfiguration config)
+    public MqttService(IConfiguration configuration, StopService stopService)
     {
-        if(_instance == null)
-        {
-            _instance = new MqttService(config);
-        }
-        
-        return _instance;
-    }
-    private MqttService(IConfiguration configuration)
-    {
+        _stopService = stopService;
         _configuration = configuration;
         var mqttFactory = new MqttClientFactory();
         _mqttClient = mqttFactory.CreateMqttClient();
@@ -144,8 +136,8 @@ public async Task InitializeAsync()
 
 
         //Stop Logic
-        var sS = StopService.Instance(_configuration);
-        FeedMessage feed = await sS.GetFeedMessageAsync("Yellow");
+      
+        FeedMessage feed = await _stopService.GetFeedMessageAsync("Yellow");
         
         GetStopsFromFeed(feed);
         
@@ -208,8 +200,7 @@ public async Task InitializeAsync()
     {
 
         //Stop Logic
-        var sS = StopService.Instance(_configuration);
-        FeedMessage feed = await sS.GetFeedMessageAsync(feedName);
+        FeedMessage feed = await _stopService.GetFeedMessageAsync(feedName);
         
         var routes = GetStopsFromFeed(feed);
 
@@ -219,6 +210,7 @@ public async Task InitializeAsync()
         {
             var applicationMessage = new MqttApplicationMessageBuilder()
             .WithTopic("stations/" + route.Key)
+            .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtMostOnce) // This is QoS 0
             .WithPayload(System.Text.Json.JsonSerializer.Serialize(route.Value.ArrivalTimes))
             .Build();
 

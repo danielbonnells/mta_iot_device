@@ -7,12 +7,13 @@ public class ESP32Service
 {
     public ESP32Service() { }
     private static readonly HttpClient _client = new HttpClient();
-
+    private readonly StopService _stopService;
     private readonly IConfiguration _configuration;
 
-    public ESP32Service(IConfiguration configuration)
+    public ESP32Service(IConfiguration configuration, StopService stopService)
     {
         _configuration = configuration;
+        _stopService = stopService;
     }
 
     public class ESPResult{
@@ -22,8 +23,7 @@ public class ESP32Service
     }
     public ESPResult GetAllData(ConfigOptions configOptions){
         
-            var stopService = StopService.Instance(_configuration);
-            var routes = stopService.GetStopByName(configOptions);
+            var routes = _stopService.GetStopByName(configOptions);
             List<string> stopTimesList = new List<string>();
             List<List<string>> alertsList = new ();
             string latestStopName = "";
