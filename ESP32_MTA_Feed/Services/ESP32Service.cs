@@ -22,7 +22,7 @@ public class ESP32Service
     }
     public ESPResult GetAllData(ConfigOptions configOptions){
         
-            var stopService = new StopService(_configuration);
+            var stopService = StopService.Instance(_configuration);
             var routes = stopService.GetStopByName(configOptions);
             List<string> stopTimesList = new List<string>();
             List<List<string>> alertsList = new ();

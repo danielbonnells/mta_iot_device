@@ -65,7 +65,7 @@ public class ESP32Controller : Controller
         try
         {
             // Call the static method directly on the type; no instance required
-            var mqttService = new MqttService(_configuration);
+            var mqttService = MqttService.Instance(_configuration);
             await mqttService.Publish_Application_Message();
             return Ok();
         }
@@ -81,7 +81,7 @@ public class ESP32Controller : Controller
         try
         {
             // Call the static method directly on the type; no instance required
-            var mqttService = new MqttService(_configuration);
+            var mqttService =  MqttService.Instance(_configuration);
             await mqttService.PublishMta();
             return Ok();
         }

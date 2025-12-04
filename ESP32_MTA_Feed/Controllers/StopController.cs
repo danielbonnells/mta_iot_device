@@ -21,7 +21,7 @@ public class StopController : Controller
     [HttpPost]
     public JsonResult GetStops([FromBody] string[] ids)
     {
-        var stopService = new StopService(_configuration);
+        var stopService = StopService.Instance(_configuration);
         return new JsonResult(stopService.GetStops(ids));
     }
 
@@ -35,7 +35,7 @@ public class StopController : Controller
     {
         try
         {
-            var stopService = new StopService(_configuration);
+            var stopService = StopService.Instance(_configuration);
             var response = stopService.GetAllStops();
             return new JsonResult(response);
         }
@@ -85,7 +85,7 @@ public class StopController : Controller
             };
             options.Add(route);
 
-            var stopService = new StopService(_configuration);
+            var stopService = StopService.Instance(_configuration);
             var stopTimes = stopService.GetStopByName(options);
 
         

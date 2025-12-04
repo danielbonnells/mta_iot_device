@@ -11,13 +11,22 @@ namespace ESP32_MTA_Feed;
 
 public class MqttService : IDisposable
 {
-    public MqttService() { }
+    private static MqttService _instance;
     private readonly IConfiguration _configuration;
     private readonly IMqttClient _mqttClient;
 
      private readonly MqttClientOptions _mqttClientOptions;
 
-    public MqttService(IConfiguration configuration)
+    public static MqttService Instance(IConfiguration config)
+    {
+        if(_instance == null)
+        {
+            _instance = new MqttService(config);
+        }
+        
+        return _instance;
+    }
+    private MqttService(IConfiguration configuration)
     {
         _configuration = configuration;
         var mqttFactory = new MqttClientFactory();
@@ -135,7 +144,7 @@ public async Task InitializeAsync()
 
 
         //Stop Logic
-        var sS = new StopService(_configuration);
+        var sS = StopService.Instance(_configuration);
         FeedMessage feed = await sS.GetFeedMessageAsync("Yellow");
         
         GetStopsFromFeed(feed);
@@ -199,7 +208,7 @@ public async Task InitializeAsync()
     {
 
         //Stop Logic
-        var sS = new StopService(_configuration);
+        var sS = StopService.Instance(_configuration);
         FeedMessage feed = await sS.GetFeedMessageAsync(feedName);
         
         var routes = GetStopsFromFeed(feed);

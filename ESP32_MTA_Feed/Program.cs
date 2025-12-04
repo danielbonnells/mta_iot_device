@@ -1,4 +1,5 @@
 using ESP32_MTA_Feed;
+using ESP32_MTA_Feed.Services;
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql;
 
@@ -7,7 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Services.AddSingleton<MqttService>();
+builder.Services.AddSingleton<MqttService>(provider =>
+    {
+        var configuration = provider.GetRequiredService<IConfiguration>();
+        return  MqttService.Instance(configuration);
+    });
+builder.Services.AddSingleton<StopService>(provider =>
+    {
+        var configuration = provider.GetRequiredService<IConfiguration>();
+        return  StopService.Instance(configuration);
+    });
 builder.Services.AddHostedService<MqttPublishScheduler>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
