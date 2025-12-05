@@ -24,18 +24,9 @@ public class MqttService : IDisposable
         var mqttFactory = new MqttClientFactory();
         _mqttClient = mqttFactory.CreateMqttClient();
         _mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer("localhost", 1884)
-            .WithClientId("DataService_Internal")
-            // .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
-            .WithTlsOptions(new MqttClientTlsOptions
-            {
-                UseTls = true,
-                AllowUntrustedCertificates = false, 
-                IgnoreCertificateRevocationErrors = false,
-                IgnoreCertificateChainErrors = true,
-                TargetHost = _configuration["MQTT_HOST"]
-            })
-            .WithCleanSession()
+            .WithClientId("MyCsharpClient") // Unique client ID
+            .WithTcpServer("localhost", 1884) // Connect to localhost on port 1883
+            .WithCleanSession() // Start a clean session
             .Build();
         
     }    
@@ -79,23 +70,28 @@ public async Task InitializeAsync()
 
         using var mqttClient = mqttFactory.CreateMqttClient();
 
-        var mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer(_configuration["MQTT_HOST"], 8883)
-            .WithClientId("DataService")
-            .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
-            .WithTlsOptions(new MqttClientTlsOptions
-            {
-                UseTls = true,
-                AllowUntrustedCertificates = false, 
-                IgnoreCertificateRevocationErrors = false,
-                IgnoreCertificateChainErrors = true,
-                TargetHost = _configuration["MQTT_HOST"]
+        // var mqttClientOptions = new MqttClientOptionsBuilder()
+        //     // .WithTcpServer(_configuration["MQTT_HOST"], 8883)
+            // .WithClientId("DataService")
+            // .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
+            // .WithTlsOptions(new MqttClientTlsOptions
+            // {
+            //     UseTls = true,
+            //     AllowUntrustedCertificates = false, 
+            //     IgnoreCertificateRevocationErrors = false,
+            //     IgnoreCertificateChainErrors = true,
+            //     TargetHost = _configuration["MQTT_HOST"]
 
-            })
-            .WithCleanSession()
+            // })
+            // .WithCleanSession()
+            // .Build();
+            
+var options = new MqttClientOptionsBuilder()
+            .WithClientId("MyCsharpClient") // Unique client ID
+            .WithTcpServer("localhost", 1884) // Connect to localhost on port 1883
+            .WithCleanSession() // Start a clean session
             .Build();
-
-        await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
+        await mqttClient.ConnectAsync(options, CancellationToken.None);
 
         var applicationMessage = new MqttApplicationMessageBuilder()
             .WithTopic("global/status")
@@ -116,23 +112,13 @@ public async Task InitializeAsync()
 
         using var mqttClient = mqttFactory.CreateMqttClient();
 
-        var mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer(_configuration["MQTT_HOST"], 8883)
-            .WithClientId("DataService")
-            .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
-            .WithTlsOptions(new MqttClientTlsOptions
-            {
-                UseTls = true,
-                AllowUntrustedCertificates = false, 
-                IgnoreCertificateRevocationErrors = false,
-                IgnoreCertificateChainErrors = true,
-                TargetHost = _configuration["MQTT_HOST"]
-
-            })
-            .WithCleanSession()
+        var options = new MqttClientOptionsBuilder()
+            .WithClientId("MyCsharpClient") // Unique client ID
+            .WithTcpServer("localhost", 1884) // Connect to localhost on port 1883
+            .WithCleanSession() // Start a clean session
             .Build();
 
-        await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
+        await mqttClient.ConnectAsync(options, CancellationToken.None);
 
 
         //Stop Logic
