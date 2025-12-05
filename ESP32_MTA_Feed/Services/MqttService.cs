@@ -24,7 +24,7 @@ public class MqttService : IDisposable
         var mqttFactory = new MqttClientFactory();
         _mqttClient = mqttFactory.CreateMqttClient();
         _mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer("127.0.0.1", 1883)
+            .WithTcpServer("127.0.0.1", 1884)
             .WithClientId("DataService_Internal")
             // .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
             // .WithTlsOptions(new MqttClientTlsOptions
