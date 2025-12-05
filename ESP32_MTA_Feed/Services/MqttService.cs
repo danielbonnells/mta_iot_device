@@ -25,7 +25,8 @@ public class MqttService : IDisposable
         _mqttClient = mqttFactory.CreateMqttClient();
         _mqttClientOptions = new MqttClientOptionsBuilder()
             .WithClientId("MyCsharpClient") // Unique client ID
-            .WithTcpServer("localhost", 1884) // Connect to localhost on port 1883
+            .WithTcpServer("127.0.0.1", 1884) // Connect to localhost on port 1883
+            .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
             .WithCleanSession() // Start a clean session
             .Build();
         
