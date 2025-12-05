@@ -27,14 +27,14 @@ public class MqttService : IDisposable
             .WithTcpServer("localhost", 1884)
             .WithClientId("DataService_Internal")
             // .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
-            // .WithTlsOptions(new MqttClientTlsOptions
-            // {
-            //     UseTls = true,
-            //     AllowUntrustedCertificates = false, 
-            //     IgnoreCertificateRevocationErrors = false,
-            //     IgnoreCertificateChainErrors = true,
-            //     TargetHost = _configuration["MQTT_HOST"]
-            // })
+            .WithTlsOptions(new MqttClientTlsOptions
+            {
+                UseTls = true,
+                AllowUntrustedCertificates = false, 
+                IgnoreCertificateRevocationErrors = false,
+                IgnoreCertificateChainErrors = true,
+                TargetHost = _configuration["MQTT_HOST"]
+            })
             .WithCleanSession()
             .Build();
         
