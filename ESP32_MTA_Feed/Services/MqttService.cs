@@ -24,17 +24,17 @@ public class MqttService : IDisposable
         var mqttFactory = new MqttClientFactory();
         _mqttClient = mqttFactory.CreateMqttClient();
         _mqttClientOptions = new MqttClientOptionsBuilder()
-            .WithTcpServer(_configuration["MQTT_HOST"], 8883)
-            .WithClientId("DataService")
-            .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
-            .WithTlsOptions(new MqttClientTlsOptions
-            {
-                UseTls = true,
-                AllowUntrustedCertificates = false, 
-                IgnoreCertificateRevocationErrors = false,
-                IgnoreCertificateChainErrors = true,
-                TargetHost = _configuration["MQTT_HOST"]
-            })
+            .WithTcpServer("127.0.0.1", 1883)
+            .WithClientId("DataService_Internal")
+            // .WithCredentials(_configuration["MQTT_USER"], _configuration["MQTT_PASS"])
+            // .WithTlsOptions(new MqttClientTlsOptions
+            // {
+            //     UseTls = true,
+            //     AllowUntrustedCertificates = false, 
+            //     IgnoreCertificateRevocationErrors = false,
+            //     IgnoreCertificateChainErrors = true,
+            //     TargetHost = _configuration["MQTT_HOST"]
+            // })
             .WithCleanSession()
             .Build();
         
@@ -170,7 +170,8 @@ public async Task InitializeAsync()
         {
             // If reconnection fails, throw a more specific error or handle gracefully
             throw new InvalidOperationException("MQTT client failed to reconnect.", ex);
-        } new InvalidOperationException("MQTT client is not connected. Reconnection logic needed.");
+        } 
+        // new InvalidOperationException("MQTT client is not connected. Reconnection logic needed.");
         }
 
         Dictionary<string, string> feeds = _configuration.GetSection("MtaApiEndpoints:GTFS").Get<Dictionary<string, string>>();
