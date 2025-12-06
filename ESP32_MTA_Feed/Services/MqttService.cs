@@ -193,13 +193,17 @@ var options = new MqttClientOptionsBuilder()
         var routes = GetStopsFromFeed(feed);
 
         List<Task> tasks = new ();
-
+        var now = DateTime.Now;
         foreach (KeyValuePair<string,RouteTopic> route in routes)
         {
+
+            var message = String.Join(", ", route.Value.ArrivalTimes.Where(t => t > now).Take(3)
+            .Select(t => t.Subtract(now).Minutes.ToString()));
+
             var applicationMessage = new MqttApplicationMessageBuilder()
             .WithTopic("stations/" + route.Key)
             .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtMostOnce) // This is QoS 0
-            .WithPayload(System.Text.Json.JsonSerializer.Serialize(route.Value.ArrivalTimes))
+            .WithPayload(message)
             .Build();
 
             tasks.Add(_mqttClient.PublishAsync(applicationMessage, CancellationToken.None));
