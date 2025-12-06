@@ -197,7 +197,7 @@ var options = new MqttClientOptionsBuilder()
         foreach (KeyValuePair<string,RouteTopic> route in routes)
         {
 
-            var message = String.Join(", ", route.Value.ArrivalTimes.Where(t => t > now).Take(3)
+            var message = String.Join(", ", route.Value.ArrivalTimes.Where(t => t > now).OrderBy(t => t).Take(3)
             .Select(t => t.Subtract(now).Minutes.ToString()));
 
             var applicationMessage = new MqttApplicationMessageBuilder()
