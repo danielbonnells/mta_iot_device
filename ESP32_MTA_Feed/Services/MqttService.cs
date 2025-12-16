@@ -230,7 +230,7 @@ var options = new MqttClientOptionsBuilder()
 
     public Dictionary<string, RouteTopic> GetStopsFromFeed(FeedMessage feed)
     {
-       //The key should be Route/StopId/Direction ex: 5/631/N
+       //The key should be StopId/Route/Direction ex: R32/R/N or R32/N/S (aka R32 on the N Route going South)
        var routeDictionary = new Dictionary<string, RouteTopic>();
 
         foreach (var entity in feed.Entity)
@@ -261,7 +261,7 @@ var options = new MqttClientOptionsBuilder()
                         stopIdNew = stop.StopId.Substring(0,3);
                     }
 
-                    var key = $"{routeId}/{stopIdNew}/{direction}";
+                    var key = $"{stopIdNew}/{routeId}/{direction}";
 
                     if(!routeDictionary.ContainsKey(key))
                     {
