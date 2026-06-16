@@ -3,29 +3,39 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # run this workflow when you push to main
+      - main
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Clean Publish Directory
-        run: rm -rf ./publish
-      - name: Publish .NET Application
-        run: dotnet publish ESP32_MTA_Feed/ESP32_MTA_Feed.csproj -c Release -o ./publish
-      - name: Deploy to VPS
-        uses: appleboy/scp-action@v0.1.7
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: "./publish/*"
-          target: "/var/www/llenno.com/mta-feed"
-      - name: Restart service
+          registry: ${{ secrets.REGISTRY_HOST }}
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./ESP32_MTA_Feed
+          push: true
+          tags: ${{ secrets.REGISTRY_HOST }}/api:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull and restart container
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          script: systemctl restart mta.service
+          script: |
+            cd /opt/apps
+            docker compose pull api
+            docker compose up -d api
