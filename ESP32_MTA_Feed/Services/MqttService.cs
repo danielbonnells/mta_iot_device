@@ -305,8 +305,8 @@ public class RouteTopic
     public List<DateTime> ArrivalTimes { get; set; } = [];
     public string GetTopic()
     {
-        //route/stopId/direction
-        //R/R32/N
-        return this.RouteId + "/" + this.StopId + "/" + this.Direction;
+        //stopId/route/direction
+        //R32/R/N
+        return this.StopId + "/" + this.RouteId + "/" + this.Direction;
     }
 }
