@@ -90,7 +90,8 @@ public async Task InitializeAsync()
             
 var options = new MqttClientOptionsBuilder()
             .WithClientId("MyCsharpClient") // Unique client ID
-            .WithTcpServer("localhost", 1884) // Connect to localhost on port 1883
+            .WithTcpServer(_configuration["MQTT_HOST"] ?? "mosquitto_stations", 
+                int.Parse(_configuration["MQTT_PORT"] ?? "1883"))
             .WithCleanSession() // Start a clean session
             .Build();
         await mqttClient.ConnectAsync(options, CancellationToken.None);
@@ -116,7 +117,8 @@ var options = new MqttClientOptionsBuilder()
 
         var options = new MqttClientOptionsBuilder()
             .WithClientId("MyCsharpClient") // Unique client ID
-            .WithTcpServer("localhost", 1884) // Connect to localhost on port 1883
+            .WithTcpServer(_configuration["MQTT_HOST"] ?? "mosquitto_stations", 
+                int.Parse(_configuration["MQTT_PORT"] ?? "1883"))
             .WithCleanSession() // Start a clean session
             .Build();
 
